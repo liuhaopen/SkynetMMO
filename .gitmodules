@@ -1,0 +1,8 @@
+[submodule "skynet"]
+	path = skynet
+	url = https://github.com/cloudwu/skynet.git
+	ignore = all
+[submodule "lsocket"]
+	path = lsocket
+	url = https://github.com/cloudwu/lsocket.git
+	ignore = all
