@@ -4,9 +4,9 @@ require "common.util"
 skynet.start(function()
 	skynet.error("Server start")
 	skynet.uniqueservice("protoloader")
-	if not skynet.getenv "daemon" then
-		local console = skynet.newservice("console")
-	end
+	-- if not skynet.getenv "daemon" then
+	-- 	local console = skynet.newservice("console")
+	-- end
 	skynet.newservice("debug_console",8000)
 	
 	local loginserver = skynet.newservice("logind")

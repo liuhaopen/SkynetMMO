@@ -9,7 +9,7 @@ require "common.util"
 -- }
 skynet.start(function()
 	--从协议目录里读取所有的lua文件,拼接其字符串生成sproto协议对象
- 	local s = io.popen("ls ../Lua/Proto")
+ 	local s = io.popen("ls game/proto")
 	local fileNames = s:read("*all")
 	fileNames = Split(fileNames, "\n")
 	if test_files and #test_files > 0 then
@@ -21,7 +21,7 @@ skynet.start(function()
     	local is_lua_file = string.find(v, ".lua", -4, true)
     	if Trim(v) ~= "" and dot_index ~= nil and is_lua_file then
 	    	local name_without_ex = string.sub(v, 1, dot_index-1)
-	        local proto_str = require("Proto."..name_without_ex)
+	        local proto_str = require("proto."..name_without_ex)
 	        if proto_str then
 	            table.insert(proto_c2s_tb, proto_str)
 	        end
