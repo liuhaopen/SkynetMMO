@@ -1,6 +1,5 @@
 local skynet = require "skynet"
-local sproto = require "sproto"
-local sprotoloader = require "sprotoloader"
+local sprotoloader = require "common.sprotoloader"
 local print_r = require "common.print_r"
 require "common.util"
 ErrorCode = require "game.config.ErrorCode"
@@ -66,7 +65,6 @@ function CMD.login(source, uid, sid, secret, platform, server_id)
 	print('Cat:msgagent.lua[50] user_info.agent', user_info.agent)
 	-- you may load user data from database
 	c2s_sproto = sprotoloader.load(1)
-	print("c2s_sproto : ", c2s_sproto, c2s_sproto.query_proto)
 	registerAllModule(user_info)
 end
 
