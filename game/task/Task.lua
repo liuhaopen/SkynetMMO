@@ -4,7 +4,7 @@ local TaskConst = require "game.task.TaskConst"
 
 local user_info
 local Task = {
-	cfg = require "Config.ConfigTask",
+	cfg = require "config.ConfigTask",
 	taskInfos = {},
 	ackTaskProgressChanged = {},
 	cacheChangedTaskInfos = {},

@@ -1,6 +1,6 @@
 local skynet = require "skynet"
 local BagConst = require "game.bag.BagConst"
-local GoodsCfg = require "Config.ConfigGoods"
+local GoodsCfg = require "config.ConfigGoods"
 local this = {
 	bagLists = {},
 	user_info = nil,
