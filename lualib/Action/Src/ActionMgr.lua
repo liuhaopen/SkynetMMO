@@ -22,14 +22,18 @@ local function Update( self, deltaTimeMS )
 		end
 	end
 	self.isUpdating = false
-	for i,v in ipairs(self.waitForDelete) do
-		self:RemoveAction(v)
+	if self.waitForDelete then
+		for i,v in ipairs(self.waitForDelete) do
+			self:RemoveAction(v)
+		end
+		self.waitForDelete = nil
 	end
 end
 
 local function RemoveAction( self, action )
 	if self.isUpdating then
 		action.__removed__ = true
+		self.waitForDelete = self.waitForDelete or {}
 		table_insert(self.waitForDelete, action)
 		return
 	end
