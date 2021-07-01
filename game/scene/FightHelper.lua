@@ -1,4 +1,4 @@
-local ECS = require "ECS"
+-- local ECS = require "ECS"
 local skynet = require "skynet"
 local skill_cfg = require "game.config.scene.config_skill"
 local math_random = math.random 

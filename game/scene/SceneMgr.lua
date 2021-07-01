@@ -2,7 +2,7 @@ require "game.scene.Global"
 require "game.scene.com.Components"
 local skynet = require "skynet"
 local Ac = require "Action"
-local ECS = require "ECS"
+local ecs = require "ecs.ecs"
 local BP = require "Blueprint"
 local SceneConst = require "game.scene.SceneConst"
 local SceneHelper = require "game.scene.SceneHelper"
@@ -38,7 +38,7 @@ local fork_loop_logic = function ( sceneMgr )
 		while true do
 			Time:update()
 			BP.Time:Update(Time.time)
-			sceneMgr.ecsSystemMgr:Update()
+			sceneMgr.ecs_world:update()
 			sceneMgr.actionMgr:Update(Time.deltaTimeMS)
 			skynet.sleep(1)
 		end
@@ -58,16 +58,16 @@ local update_around_objs = function ( sceneMgr, role_info )
 			role_info.around_objs[scene_uid] = scene_uid
 			local entity = sceneMgr.uid_entity_map[scene_uid]
 			if entity then
-				local pos = sceneMgr.entityMgr:GetComponentData(entity, "UMO.Position")
-				local scene_obj_type = sceneMgr.entityMgr:GetComponentData(entity, "UMO.SceneObjType")
+				local pos = sceneMgr.entityMgr:get_component(entity, "UMO.Position")
+				local scene_obj_type = sceneMgr.entityMgr:get_component(entity, "UMO.SceneObjType")
 				local target_pos = pos 
-				if sceneMgr.entityMgr:HasComponent(entity, "UMO.TargetPos") then
-					target_pos = sceneMgr.entityMgr:GetComponentData(entity, "UMO.TargetPos")
+				if sceneMgr.entityMgr:has_component(entity, "UMO.TargetPos") then
+					target_pos = sceneMgr.entityMgr:get_component(entity, "UMO.TargetPos")
 				end
-				local type_id = sceneMgr.entityMgr:GetComponentData(entity, "UMO.TypeID")
+				local type_id = sceneMgr.entityMgr:get_component(entity, "UMO.TypeID")
 				local eventStr = scene_obj_type.value..","..type_id..","..math.floor(pos.x)..","..math.floor(pos.y)..","..math.floor(pos.z)..","..math.floor(target_pos.x)..","..math.floor(target_pos.y)..","..math.floor(target_pos.z)
-				if sceneMgr.entityMgr:HasComponent(entity, "UMO.HP") then
-					local hp = sceneMgr.entityMgr:GetComponentData(entity, "UMO.HP")
+				if sceneMgr.entityMgr:has_component(entity, "UMO.HP") then
+					local hp = sceneMgr.entityMgr:get_component(entity, "UMO.HP")
 					eventStr = eventStr..","..math.floor(hp.cur)..","..math.floor(hp.max)
 				end
 				role_info.change_obj_infos = SceneHelper.AddInfoItem(role_info.change_obj_infos, scene_uid, {key=SceneConst.InfoKey.EnterView, value=eventStr, time=cur_time})
@@ -210,8 +210,10 @@ function SceneMgr:Init( scene_id )
 	BlueprintRegister:register_all()
 
 	self.aoi:init()
-	self.ecs_world = ECS.InitWorld("scene_world")
-	self.entityMgr = ECS.World.Active:GetOrCreateManager(ECS.EntityManager.Name)
+	-- self.ecs_world = ECS.InitWorld("scene_world")
+	-- self.entityMgr = ECS.World.Active:GetOrCreateManager(ECS.EntityManager.Name)
+	self.ecs_world = ecs.world:new("scene_world")
+	self.entityMgr = self.ecs_world.entity_mgr
 	self.scene_cfg = require("config.scene.config_scene_"..scene_id)
 	self.curSceneID = scene_id
 	self.actionMgr:Init()
